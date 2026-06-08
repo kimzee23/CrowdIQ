@@ -7,6 +7,7 @@ from __future__ import annotations
 from typing import Annotated
 
 from fastapi import Depends, Header
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.application.services.ai_service import AIService
@@ -106,16 +107,17 @@ def get_ai_service() -> AIService:
 
 # ── Auth dependencies ─────────────────────────────────────────────────────────
 
+security = HTTPBearer(auto_error=False)
+
 async def _extract_user(
-    authorization: str | None,
+    token: str | None,
     user_repo: PostgresUserRepository,
     required: bool,
 ) -> User | None:
-    if not authorization or not authorization.startswith("Bearer "):
+    if not token:
         if required:
             raise UnauthorizedError("Missing Authorization header")
         return None
-    token = authorization.removeprefix("Bearer ").strip()
     payload = decode_token(token, expected_type="access")
     user = await user_repo.get_by_id(payload["sub"])
     if not user:
@@ -126,18 +128,20 @@ async def _extract_user(
 
 
 async def get_current_user(
-    authorization: Annotated[str | None, Header()] = None,
+    auth: HTTPAuthorizationCredentials | None = Depends(security),
     user_repo: PostgresUserRepository = Depends(get_user_repo),
 ) -> User:
-    user = await _extract_user(authorization, user_repo, required=True)
+    token = auth.credentials if auth else None
+    user = await _extract_user(token, user_repo, required=True)
     return user  # type: ignore[return-value]
 
 
 async def get_optional_user(
-    authorization: Annotated[str | None, Header()] = None,
+    auth: HTTPAuthorizationCredentials | None = Depends(security),
     user_repo: PostgresUserRepository = Depends(get_user_repo),
 ) -> User | None:
-    return await _extract_user(authorization, user_repo, required=False)
+    token = auth.credentials if auth else None
+    return await _extract_user(token, user_repo, required=False)
 
 
 async def require_admin(current_user: User = Depends(get_current_user)) -> User:
