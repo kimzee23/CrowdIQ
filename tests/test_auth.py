@@ -2,12 +2,12 @@ import pytest
 from httpx import AsyncClient
 
 @pytest.mark.asyncio
-async def test_register_user(async_client: AsyncClient):
+async def test_that_user_can_register(async_client: AsyncClient):
     response = await async_client.post(
         "/api/v1/auth/register",
         json={
-            "username": "testuser",
-            "email": "test@example.com",
+            "username": "ade_ope",
+            "email": "ade@gmail.com",
             "password": "Password123!"
         }
     )
@@ -17,13 +17,13 @@ async def test_register_user(async_client: AsyncClient):
     assert "refresh_token" in data
 
 @pytest.mark.asyncio
-async def test_login_user(async_client: AsyncClient):
+async def test_that_user_can_login(async_client: AsyncClient):
     # Register first
     await async_client.post(
         "/api/v1/auth/register",
         json={
-            "username": "loginuser",
-            "email": "login@example.com",
+            "username": "Adelogin",
+            "email": "Adelogin@gmail.com",
             "password": "Password123!"
         }
     )
@@ -32,7 +32,7 @@ async def test_login_user(async_client: AsyncClient):
     response = await async_client.post(
         "/api/v1/auth/login",
         json={
-            "email": "login@example.com",
+            "email": "Adelogin@gmail.com",
             "password": "Password123!"
         }
     )
@@ -42,7 +42,7 @@ async def test_login_user(async_client: AsyncClient):
     assert "refresh_token" in data
 
 @pytest.mark.asyncio
-async def test_get_me(async_client: AsyncClient):
+async def test_that_get_profile(async_client: AsyncClient):
     # Register and login
     await async_client.post(
         "/api/v1/auth/register",
