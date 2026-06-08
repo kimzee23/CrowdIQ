@@ -26,7 +26,7 @@ class Settings(BaseSettings):
     SECRET_KEY: str = "change-me-in-production-at-least-32-chars"
 
     # ── Database (PostgreSQL) ─────────────────────────────────────────────────
-    DATABASE_URL: str = "postgresql+asyncpg://crowdiq:crowdiq_pass@localhost:5432/crowdiq_db"
+    DATABASE_URL: str = "postgresql+asyncpg://postgres:admin1234@localhost:5433/crowdiq_db"
 
     # ── Redis ─────────────────────────────────────────────────────────────────
     REDIS_URL: str = "redis://localhost:6379/0"
