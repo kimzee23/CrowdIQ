@@ -8,8 +8,8 @@ from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_asyn
 from sqlalchemy.pool import StaticPool
 
 from main import app
-from src.infrastructure.postgres.database import get_db
-from src.infrastructure.postgres.models import Base
+from src.infrastructure.persistence.repository.database import get_db
+from src.infrastructure.persistence.entity import Base
 
 # We use an in-memory SQLite database for testing to avoid needing a live Postgres instance.
 # Note: SQLite has some differences from Postgres, but for MVP testing it's sufficient.

@@ -4,10 +4,13 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse, JSONResponse
 
-from src.shared.exceptions.base import CrowdIQException
+from src.domain.exception.base import CrowdIQException
 
-from src.presentation.api.v1 import auth, predictions, users
-from src.shared.configs.settings import settings
+from src.infrastructure.input.rest.controller import auth, predictions, users
+from src.infrastructure.config.settings import settings
+from src.infrastructure.config.logger import setup_logging
+
+setup_logging()
 
 
 @asynccontextmanager
@@ -75,4 +78,8 @@ async def root():
 @app.get("/health", tags=["Health"])
 async def health_check():
     """Check API health status."""
-    return {"status": "healthy"}
+    return {"status": "UP"}
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)
