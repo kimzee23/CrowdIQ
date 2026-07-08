@@ -136,24 +136,24 @@ import_map = {
     # exact paths
     "src.shared.exceptions": "src.domain.exception",
     "src.shared.configs": "src.infrastructure.config",
-    "src.shared.security": "src.infrastructure.config.security",
+    "src.shared.security": "src.infrastructure.security",
     "src.shared.utils": "src.infrastructure.config.utils",
     
-    "src.presentation.api.v1": "src.infrastructure.input.rest.controller",
-    "src.presentation.api.deps": "src.infrastructure.input.rest.controller.deps",
+    "src.presentation.api.v1": "src.presentation.api",
+    "src.presentation.api.deps": "src.presentation.api.deps",
     
-    "src.application.dto": "src.application.port.input",
+    "src.application.dto": "src.application.dto",
     "src.application.services": "src.domain.service",
     
-    "src.infrastructure.postgres.repositories": "src.infrastructure.persistence.adapter",
-    "src.infrastructure.postgres.models": "src.infrastructure.persistence.entity",
+    "src.infrastructure.postgres.repositories": "src.infrastructure.persistence.repositories",
+    "src.infrastructure.postgres.models": "src.infrastructure.persistence.models",
     "src.infrastructure.postgres.database": "src.infrastructure.persistence.repository.database",
     
-    "src.infrastructure.redis": "src.infrastructure.output.adapter.redis",
-    "src.infrastructure.opensearch": "src.infrastructure.output.adapter.opensearch",
-    "src.infrastructure.keycloak": "src.infrastructure.output.adapter.keycloak",
-    "src.infrastructure.celery": "src.infrastructure.output.adapter.celery",
-    "src.infrastructure.openai": "src.infrastructure.output.adapter.openai",
+    "src.infrastructure.redis": "src.infrastructure.cache",
+    "src.infrastructure.opensearch": "src.infrastructure.search",
+    "src.infrastructure.keycloak": "src.infrastructure.keycloak",
+    "src.infrastructure.celery": "src.infrastructure.celery",
+    "src.infrastructure.openai": "src.infrastructure.ai",
     
     # specific entities and repositories
     "src.domain.user.entity": "src.domain.model.user",

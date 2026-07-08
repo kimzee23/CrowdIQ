@@ -6,7 +6,9 @@ from fastapi.responses import RedirectResponse, JSONResponse
 
 from src.domain.exception.base import CrowdIQException
 
-from src.infrastructure.input.rest.controller import auth, predictions, users
+from src.presentation.api import auth, predictions, users
+from src.presentation.middleware.timing import TimingMiddleware
+from src.presentation.websocket import router as websocket_router
 from src.infrastructure.config.settings import settings
 from src.infrastructure.config.logger import setup_logging
 
@@ -58,10 +60,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Custom middlewares
+app.add_middleware(TimingMiddleware)
+
 # Include Routers
 app.include_router(auth.router, prefix="/api/v1")
 app.include_router(users.router, prefix="/api/v1")
 app.include_router(predictions.router, prefix="/api/v1")
+app.include_router(websocket_router.router)
 
 @app.exception_handler(CrowdIQException)
 async def crowdiq_exception_handler(request: Request, exc: CrowdIQException):
@@ -82,4 +88,5 @@ async def health_check():
 
 if __name__ == "__main__":
     import uvicorn
+    print("Application is starting...")
     uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)

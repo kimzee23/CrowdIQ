@@ -23,6 +23,10 @@ class AbstractUserRepository(ABC):
     async def get_by_username(self, username: str) -> Optional[User]: ...
 
     @abstractmethod
+    async def get_by_display_name(self, display_name: str) -> Optional[User]: ...
+
+
+    @abstractmethod
     async def update(self, user: User) -> User: ...
 
     @abstractmethod

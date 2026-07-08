@@ -18,8 +18,8 @@ if config.config_file_name is not None:
 
 # add your model's MetaData object here
 # for 'autogenerate' support
-from src.infrastructure.postgres.models import Base
-from src.shared.configs.settings import settings
+from src.infrastructure.persistence.models import Base
+from src.infrastructure.config.settings import settings
 
 target_metadata = Base.metadata
 

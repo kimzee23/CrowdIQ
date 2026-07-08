@@ -5,7 +5,7 @@ Pure Python dataclass; zero infrastructure dependencies.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import datetime, timezone, date
 from enum import Enum
 from typing import Optional
 
@@ -48,6 +48,26 @@ class User:
     is_verified: bool = False
     created_at: datetime = field(default_factory=_now)
     updated_at: datetime = field(default_factory=_now)
+    cover_photo_url: Optional[str] = None
+    date_of_birth: Optional[date] = None
+    phone_number: Optional[str] = None
+    website: Optional[str] = None
+    country: Optional[str] = None
+    state_province: Optional[str] = None
+    city: Optional[str] = None
+    timezone: Optional[str] = None
+    social_linkedin: Optional[str] = None
+    social_github: Optional[str] = None
+    social_twitter: Optional[str] = None
+    social_instagram: Optional[str] = None
+    social_facebook: Optional[str] = None
+    social_youtube: Optional[str] = None
+    social_tiktok: Optional[str] = None
+    social_portfolio: Optional[str] = None
+    interests: list[str] = field(default_factory=list)
+    hobbies: list[str] = field(default_factory=list)
+    favorite_topics: list[str] = field(default_factory=list)
+    preferred_language: str = "en"
 
     # ── Derived properties ────────────────────────────────────────────────────
 

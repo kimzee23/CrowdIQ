@@ -6,8 +6,9 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from typing import List, Optional
 
-from src.domain.model.prediction import Category, Prediction
+from src.domain.model.prediction import  Prediction
 
+from src.domain.model.category import Category
 
 class AbstractPredictionRepository(ABC):
     @abstractmethod

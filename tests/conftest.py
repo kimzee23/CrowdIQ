@@ -9,7 +9,7 @@ from sqlalchemy.pool import StaticPool
 
 from main import app
 from src.infrastructure.persistence.repository.database import get_db
-from src.infrastructure.persistence.entity import Base
+from src.infrastructure.persistence.models import Base
 
 # We use an in-memory SQLite database for testing to avoid needing a live Postgres instance.
 # Note: SQLite has some differences from Postgres, but for MVP testing it's sufficient.
@@ -58,3 +58,26 @@ async def async_client() -> AsyncGenerator[AsyncClient, None]:
         base_url="http://test"
     ) as client:
         yield client
+
+
+@pytest.fixture
+def mock_redis_store():
+    return {}
+
+
+@pytest.fixture(autouse=True)
+def mock_redis_and_celery(monkeypatch, mock_redis_store):
+    async def fake_set(key, value, ttl=300):
+        mock_redis_store[key] = value
+
+    async def fake_get(key):
+        return mock_redis_store.get(key)
+
+    async def fake_delete(key):
+        mock_redis_store.pop(key, None)
+
+    monkeypatch.setattr("src.domain.service.user.cache_set", fake_set)
+    monkeypatch.setattr("src.domain.service.user.cache_get", fake_get)
+    monkeypatch.setattr("src.domain.service.user.cache_delete", fake_delete)
+
+    monkeypatch.setattr("src.domain.service.user.send_email_notification.delay", lambda *a, **kw: None)

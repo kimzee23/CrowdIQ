@@ -37,12 +37,12 @@ class PredictionOption:
     vote_count: int = 0
 
 
-@dataclass
-class Category:
-    id: str
-    name: str
-    slug: str
-    created_at: datetime = field(default_factory=_now)
+# @dataclass
+# class Category:
+#     id: str
+#     name: str
+#     slug: str
+#     created_at: datetime = field(default_factory=_now)
 
 
 @dataclass
