@@ -9,6 +9,10 @@ from src.domain.service.user.unfollow_user import UnfollowUser
 
 __all__ = ["UpdateProfile", "FollowUser", "UnfollowUser"]
 
-from .auth_service import AuthService
 from .user_service import UserService
-__all__.extend(['AuthService', 'UserService'])
+__all__.append("UserService")
+
+# AuthService has been split into src.domain.service.auth.* and
+# src.domain.service.otp.* — import from there instead, e.g.:
+#   from src.domain.service.auth.login import LoginService
+#   from src.domain.service.otp.send_otp import SendOTPService

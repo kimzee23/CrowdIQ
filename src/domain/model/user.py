@@ -5,28 +5,15 @@ Pure Python dataclass; zero infrastructure dependencies.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from datetime import datetime, timezone, date
-from enum import Enum
+from datetime import datetime, date
 from typing import Optional
+
+from domain.model.enums.reputation_level import ReputationLevel
+from domain.model.enums.user_role import UserRole
 
 
 def _now() -> datetime:
     return datetime.now()
-
-
-class UserRole(str, Enum):
-    GUEST = "guest"
-    USER = "user"
-    MODERATOR = "moderator"
-    ADMIN = "admin"
-
-
-class ReputationLevel(str, Enum):
-    BRONZE = "bronze"
-    SILVER = "silver"
-    GOLD = "gold"
-    PLATINUM = "platinum"
-    LEGEND = "legend"
 
 
 @dataclass

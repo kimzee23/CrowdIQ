@@ -9,7 +9,7 @@ from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.domain.service.ai import AIService
-from src.domain.service.user import AuthService, UserService
+from src.domain.service.user import UserService
 from src.domain.service.comment import CommentService
 from src.domain.service.notification import NotificationService
 from src.domain.service.prediction import PredictionService
@@ -32,6 +32,17 @@ from src.infrastructure.persistence.repositories.user_repo import PostgresUserRe
 from src.infrastructure.persistence.repositories.vote_repo import PostgresVoteRepository
 from src.domain.exception.base import UnauthorizedError
 from src.infrastructure.security.jwt import decode_token
+
+# ── Split auth / otp services ──────────────────────────────────────────────────
+from src.domain.service.auth.login import LoginService
+from src.domain.service.auth.register import RegisterService
+from src.domain.service.auth.refresh_token import RefreshTokenService
+from src.domain.service.auth.me import MeService
+from src.domain.service.auth.forgot_password import ForgotPasswordService
+from src.domain.service.auth.verify_reset_otp import VerifyResetOTPService
+from src.domain.service.auth.reset_password import ResetPasswordService
+from src.domain.service.otp.send_otp import SendOTPService
+from src.domain.service.otp.verify_otp import VerifyOTPService
 
 # ── Repository factories ──────────────────────────────────────────────────────
 
@@ -61,8 +72,32 @@ def get_reputation_repo(db: AsyncSession = Depends(get_db)) -> PostgresReputatio
 
 # ── Service factories ─────────────────────────────────────────────────────────
 
-def get_auth_service(repo=Depends(get_user_repo)) -> AuthService:
-    return AuthService(repo)
+def get_login_service(repo: PostgresUserRepository = Depends(get_user_repo)) -> LoginService:
+    return LoginService(repo)
+
+def get_register_service(repo: PostgresUserRepository = Depends(get_user_repo)) -> RegisterService:
+    return RegisterService(repo)
+
+def get_refresh_token_service(repo: PostgresUserRepository = Depends(get_user_repo)) -> RefreshTokenService:
+    return RefreshTokenService(repo)
+
+def get_me_service(repo: PostgresUserRepository = Depends(get_user_repo)) -> MeService:
+    return MeService(repo)
+
+def get_forgot_password_service(repo: PostgresUserRepository = Depends(get_user_repo)) -> ForgotPasswordService:
+    return ForgotPasswordService(repo)
+
+def get_verify_reset_otp_service(repo: PostgresUserRepository = Depends(get_user_repo)) -> VerifyResetOTPService:
+    return VerifyResetOTPService(repo)
+
+def get_reset_password_service(repo: PostgresUserRepository = Depends(get_user_repo)) -> ResetPasswordService:
+    return ResetPasswordService(repo)
+
+def get_send_otp_service(repo: PostgresUserRepository = Depends(get_user_repo)) -> SendOTPService:
+    return SendOTPService(repo)
+
+def get_verify_otp_service(repo: PostgresUserRepository = Depends(get_user_repo)) -> VerifyOTPService:
+    return VerifyOTPService(repo)
 
 def get_user_service(repo=Depends(get_user_repo)) -> UserService:
     return UserService(repo)
